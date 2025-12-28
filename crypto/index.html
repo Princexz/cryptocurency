@@ -24,6 +24,36 @@
     h3 { color: #ffffff !important; }
     /* Make all list items display white */
     li { color: #ffffff !important; }
+
+    /* Google Translate widget styling */
+    #google_translate_element { color: #ffffff; }
+    #google_translate_element .goog-te-combo { background: transparent !important; color: #ffffff !important; border: none !important; padding: 0.25rem 0.5rem; }
+    .goog-tooltip { display: none !important; }
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+
+    /* Dark / Light theme variables and overrides */
+    body.dark-mode { background: linear-gradient(to bottom, #0b1220, #000) !important; color: #e6eef8 !important; }
+    body.dark-mode header { background: rgba(2,6,23,0.8) !important; border-color: rgba(55,65,81,0.5) !important; }
+    body.dark-mode .bg-gray-900, body.dark-mode .bg-gray-950, body.dark-mode .bg-gray-800 { background-color: #0b1220 !important; }
+    body.dark-mode .text-gray-300, body.dark-mode .text-gray-400, body.dark-mode .text-gray-500 { color: #cbd5e1 !important; }
+    body.dark-mode .text-gray-900 { color: #e6eef8 !important; }
+    body.dark-mode .text-white { color: #ffffff !important; }
+
+    /* Light mode fallback (explicit) */
+    body.light-mode { background: linear-gradient(to-br, #e6f2ff, #eef6f3) !important; color: #111827 !important; }
+    body.light-mode header { background: rgba(255,255,255,0.9) !important; border-color: rgba(226,232,240,0.6) !important; }
+
+    /* Google Translate selector appearance */
+    #translate-select { background: rgba(255,255,255,0.02); color: #ffffff; border: 1px solid rgba(255,255,255,0.06); }
+    body.light-mode #translate-select { background: rgba(255,255,255,0.9); color: #111827; border-color: rgba(0,0,0,0.06); }
+
+    /* Theme toggle button adjustments */
+    #theme-toggle { border: 1px solid rgba(255,255,255,0.06); }
+    #theme-toggle .fa { pointer-events: none; }
+    @media (prefers-color-scheme: dark) {
+      /* initialize icon color for users preferring dark if no preference set */
+      #theme-icon { color: #f1f5f9; }
+    }
   </style>
 
 <body class="bg-gradient-to-br from-sky-50 via-indigo-50 to-emerald-50 text-gray-900 font-sans">
@@ -38,6 +68,14 @@
         <a href="index.html" class="flex items-center">
             <img class="h-16 w-auto" src="storage/app/public/photos/9eACMXc41vUHLn8WR2IzQyIREJx8UkkqQjDTAHQB.png" alt="Grand Trading">
         </a>
+
+        <!-- Translate Widget -->
+        <div id="google_translate_element" class="ml-4 hidden sm:block"></div>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" aria-label="Toggle theme" class="ml-4 inline-flex items-center justify-center p-2 rounded-md text-gray-700 bg-white/10 hover:bg-white/20 transition" title="Toggle dark / light">
+          <i id="theme-icon" class="fas fa-moon"></i>
+        </button>
 
     <!-- Account Dropdown -->
     <nav class="relative" x-data="{ open: false }">
@@ -1708,6 +1746,83 @@ window.smartsupp||(function(d) {
 
     // Show new popup every 12s
     setInterval(showPopup, 12000);
+</script>
+
+<!-- Google Translate Init -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'en,fr,de,es,it,pt,ar,ru,zh-CN',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- Dark/Light theme toggle script -->
+<script>
+(function(){
+  const btn = document.getElementById('theme-toggle');
+  const icon = document.getElementById('theme-icon');
+  const root = document.body;
+  function setTheme(mode){
+    if(mode === 'dark'){
+      root.classList.add('dark-mode');
+      root.classList.remove('light-mode');
+      icon.className = 'fas fa-sun';
+      icon.style.color = '#ffd166';
+    } else {
+      root.classList.remove('dark-mode');
+      root.classList.add('light-mode');
+      icon.className = 'fas fa-moon';
+      icon.style.color = '#374151';
+    }
+    try{ localStorage.setItem('site-theme', mode); }catch(e){}
+  }
+  btn && btn.addEventListener('click', ()=>{
+    const isDark = root.classList.contains('dark-mode');
+    setTheme(isDark ? 'light' : 'dark');
+  });
+  // Initialize from persistence or prefers-color-scheme
+  const saved = (function(){ try{ return localStorage.getItem('site-theme'); }catch(e){ return null; }})();
+  const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  setTheme(saved || prefers);
+})();
+</script>
+
+<!-- Google Translate helper (set cookie + reload) -->
+<script>
+(function(){
+  function setCookie(name, value, days){
+    var d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = name + "=" + value + ";path=/;expires=" + d.toUTCString();
+  }
+  function getCookie(name){
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : null;
+  }
+  function parseLang(){
+    var v = getCookie('googtrans') || '/en/en';
+    var parts = v.split('/');
+    return parts[2] || 'en';
+  }
+  var select = document.getElementById('translate-select');
+  if(select){
+    var current = parseLang();
+    if(current === 'zh') current = 'zh-CN';
+    if(Array.from(select.options).some(function(o){return o.value===current;})){
+      select.value = current;
+    }
+    select.addEventListener('change', function(){
+      var lang = this.value;
+      setCookie('googtrans','/en/'+lang, 365);
+      document.cookie = 'googtrans=/en/'+lang+';path=/';
+      // Force reload to let the translation script pick up the cookie
+      window.location.reload();
+    });
+  }
+})();
 </script>
 
 </body>
