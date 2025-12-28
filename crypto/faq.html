@@ -161,12 +161,28 @@
                         <img class="h-8 w-auto" src="storage/app/public/photos/9eACMXc41vUHLn8WR2IzQyIREJx8UkkqQjDTAHQB.png" alt="Grand Trading">
                     </a>
 
-                    <!-- Theme Toggle -->
-                    <div class="flex items-center">
-                        <button id="theme-toggle" aria-label="Toggle theme" class="ml-4 inline-flex items-center justify-center p-2 rounded-md text-gray-700 bg-white/10 hover:bg-white/20 transition" title="Toggle dark / light">
-                          <i id="theme-icon" class="fas fa-moon"></i>
-                        </button>
-                    </div>
+                    <!-- Translate Widget (visible) -->
+                    <div id="google_translate_element" class="ml-4 hidden sm:block"></div>
+                    <select id="translate-select" aria-label="Select language" class="ml-3 px-3 py-1 rounded-md bg-white/10 text-white text-sm">
+                      <option value="en">English</option>
+                      <option value="fr">Français</option>
+                      <option value="de">Deutsch</option>
+                      <option value="es">Español</option>
+                      <option value="it">Italiano</option>
+                      <option value="pt">Português</option>
+                      <option value="ar">العربية</option>
+                      <option value="ru">Русский</option>
+                      <option value="zh-CN">中文(简体)</option>
+                    </select>
+
+
+                </div>
+
+                <!-- Theme Toggle (moved) -->
+                <div class="hidden md:flex items-center ml-4">
+                    <button id="theme-toggle" aria-label="Toggle theme" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 bg-white/10 hover:bg-white/20 transition" title="Toggle dark / light">
+                      <i id="theme-icon" class="fas fa-moon"></i>
+                    </button>
                 </div>
 
                 <!-- Main Navigation - Desktop -->
