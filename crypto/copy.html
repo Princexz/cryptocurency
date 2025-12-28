@@ -4,6 +4,15 @@
 <!-- Mirrored from www.Grand Trading.com/copy by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 23 Dec 2025 00:56:28 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
+    <!-- Site theme CSS (dark/light) -->
+    <style>
+      /* site-theme-css */
+      :root{ --bg-light: linear-gradient(to-br,#e6f2ff,#eef6f3); --bg-dark: linear-gradient(to-bottom,#0b1220,#000); }
+      body.dark-mode, html.dark{ background: var(--bg-dark) !important; color: #e6eef8 !important; }
+      body.light-mode, html:not(.dark){ background: var(--bg-light) !important; color:#111827 !important; }
+      #theme-toggle{ border:1px solid rgba(255,255,255,0.06); }
+      #theme-icon{ transition: color .2s; }
+    </style>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -886,6 +895,43 @@ window.smartsupp||(function(d) {
 <div class="gtranslate_wrapper"></div>
 <script>window.gtranslateSettings = {"default_language":"en","wrapper_selector":".gtranslate_wrapper"}</script>
 <script src="../cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+<!-- Site theme initializer (idempotent) -->
+<script>
+if(!window.siteThemeInit){
+  window.siteThemeInit = true;
+  (function(){
+    const btn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const root = document.documentElement;
+    const body = document.body;
+    function setTheme(mode){
+      if(mode === 'dark'){
+        root.classList.add('dark');
+        body.classList.add('dark-mode');
+        body.classList.remove('light-mode');
+        if(window.Alpine && Alpine.store && Alpine.store('darkMode')) { try{ Alpine.store('darkMode').on = true; }catch(e){} }
+        if(icon){ icon.className = 'fas fa-sun'; icon.style.color = '#ffd166'; }
+      } else {
+        root.classList.remove('dark');
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        if(window.Alpine && Alpine.store && Alpine.store('darkMode')) { try{ Alpine.store('darkMode').on = false; }catch(e){} }
+        if(icon){ icon.className = 'fas fa-moon'; icon.style.color = '#374151'; }
+      }
+      try{ localStorage.setItem('site-theme', mode); }catch(e){}
+    }
+    if(btn) btn.addEventListener('click', ()=>{
+      const isDark = document.documentElement.classList.contains('dark') || document.body.classList.contains('dark-mode');
+      const newMode = isDark ? 'light' : 'dark';
+      setTheme(newMode);
+      if(window.Alpine && Alpine.store && Alpine.store('darkMode') && Alpine.store('darkMode').toggle) try{ Alpine.store('darkMode').toggle(); }catch(e){}
+    });
+    const saved = (function(){ try{ return localStorage.getItem('site-theme'); }catch(e){ return null; }})();
+    const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    setTheme(saved || prefers);
+  })();
+}
+</script>
 </body>
 
 <!-- Mirrored from www.Grand Trading.com/copy by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 23 Dec 2025 00:56:28 GMT -->
