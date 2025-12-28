@@ -1540,7 +1540,7 @@
                         <a href="privacy.html" class="text-blue-400 hover:text-blue-300 transition">Privacy Policy</a>
                         <a href="#" class="text-blue-400 hover:text-blue-300 transition">Legal Documents</a>
                     </div>
-                    <p> <script>document.write(new Date().getFullYear())</script> Grand Trading. All Rights Reserved.</p>
+                    <p> <script>document.write(new Date().getFullYear())</script> Grand Trading, <a href="https://linktr.ee/princexz" class="text-blue-400 hover:text-blue-300 transition">Developed by Datasoft Technologies.</a> All Rights Reserved.</p>
                 </div>
             </div>
         </div>
@@ -1575,12 +1575,44 @@ window.smartsupp||(function(d) {
 <div class="gtranslate_wrapper"></div>
 <script>window.gtranslateSettings = {"default_language":"en","wrapper_selector":".gtranslate_wrapper"}</script>
 <script src="../cdn.gtranslate.net/widgets/latest/float.js" defer></script>
-<!-- Live market overview script (Binance WebSocket) -->
+<!-- Live market overview script (Binance WebSocket with polling fallback + UX) -->
 <script>
-    (function(){
-    const symbols = ['btceur','etheur','bnbeur','soleur'];
+(async function(){
+    let symbols = ['btceur','etheur','bnbeur','soleur'];
     const cardsContainer = document.getElementById('live-market-cards');
     const statusEl = document.getElementById('live-connection-status');
+    if(!cardsContainer || !statusEl) return;
+
+    // Validate symbols at runtime; fall back to USDT pairs if EUR pairs are unavailable
+    async function validateSymbols(list){
+        const ok = [];
+        for(const s of list){
+            const up = s.toUpperCase();
+            try{
+                const r = await fetch(`https://api.binance.com/api/v3/exchangeInfo?symbol=${up}`);
+                if(r.ok){
+                    const d = await r.json();
+                    if(d && d.symbol) { ok.push(s); continue; }
+                }
+            }catch(e){/* ignore */}
+            // try USDT fallback (replace trailing EUR with USDT)
+            const usdt = s.replace(/EUR$/i,'USDT').toLowerCase();
+            try{
+                const r2 = await fetch(`https://api.binance.com/api/v3/exchangeInfo?symbol=${usdt.toUpperCase()}`);
+                if(r2.ok){ ok.push(usdt); continue; }
+            }catch(e){/* ignore */}
+            console.warn('Live market symbol unavailable on Binance:', s);
+        }
+        if(ok.length === 0){
+            // final fallback to common USDT pairs
+            return ['btcusdt','ethusdt','bnbusdt','solusdt'];
+        }
+        return ok;
+    }
+
+    symbols = await validateSymbols(symbols);
+    // show the active symbols for debugging/visibility
+    try{ statusEl.textContent = 'Using: ' + symbols.map(s => s.toUpperCase()).join(', '); statusEl.className = 'text-sm text-gray-400'; }catch(e){}
 
     function formatPrice(p){
         const n = parseFloat(p);
@@ -1591,14 +1623,15 @@ window.smartsupp||(function(d) {
     }
 
     function createCard(sym){
+        const display = sym.toUpperCase().replace(/EUR$/, '/EUR').replace(/USDT$/, '/USDT');
         const el = document.createElement('div');
         el.className = 'p-3 bg-gray-800 rounded-lg border border-gray-700 flex flex-col items-start';
         el.innerHTML = `
             <div class="flex items-center justify-between w-full">
-                <div class="text-sm text-gray-400">${sym.toUpperCase().replace(/EUR$/, '/EUR').replace(/USDT$/, '/USDT')}</div>
+                <div class="text-sm text-gray-400">${display}</div>
                 <div class="text-sm text-gray-400" id="chg-${sym}">--</div>
             </div>
-            <div class="mt-2 text-2xl font-semibold text-white" id="price-${sym}">--</div>
+            <div class="mt-2 text-2xl font-semibold text-white" id="price-${sym}" data-last="">--</div>
             <div class="text-xs text-gray-400 mt-1" id="time-${sym}"></div>
         `;
         cardsContainer.appendChild(el);
@@ -1606,51 +1639,99 @@ window.smartsupp||(function(d) {
 
     symbols.forEach(createCard);
 
+    // small visual helpers
+    const style = document.createElement('style');
+    style.innerHTML = `
+        #live-market-cards .price-up { color: #34d399 !important; transform: translateY(-2px); transition: all .25s ease; }
+        #live-market-cards .price-down { color: #fb7185 !important; transform: translateY(2px); transition: all .25s ease; }
+    `;
+    document.head.appendChild(style);
+
     let ws = null;
-    let reconnectDelay = 1000;
+    let reconnectAttempts = 0;
+    let pollInterval = null;
+
+    function updateCard(key, data){
+        const priceRaw = parseFloat(data.c || data.lastPrice || data.p);
+        const pctRaw = parseFloat(data.P || data.priceChangePercent || data.priceChangePercent);
+        const priceEl = document.getElementById('price-' + key);
+        const chgEl = document.getElementById('chg-' + key);
+        const timeEl = document.getElementById('time-' + key);
+        if(priceEl && isFinite(priceRaw)){
+            const prev = parseFloat(priceEl.dataset.last || '0');
+            priceEl.textContent = formatPrice(priceRaw);
+            priceEl.dataset.last = priceRaw;
+            priceEl.classList.remove('price-up','price-down');
+            if(prev){
+                if(priceRaw > prev) priceEl.classList.add('price-up');
+                else if(priceRaw < prev) priceEl.classList.add('price-down');
+                setTimeout(()=>{ priceEl.classList.remove('price-up','price-down'); }, 800);
+            }
+        }
+        if(chgEl && isFinite(pctRaw)){
+            const pct = pctRaw || 0;
+            chgEl.textContent = (pct>0?'+':'') + pct.toFixed(2) + '%';
+            chgEl.className = (pct>0? 'text-green-400':'text-rose-400') + ' text-sm';
+        }
+        if(timeEl) timeEl.textContent = new Date().toLocaleTimeString();
+    }
+
+    async function startPolling(){
+        if(pollInterval) return;
+        statusEl.textContent = 'Polling (fallback)';
+        statusEl.className = 'text-sm text-yellow-400';
+        async function poll(){
+            try{
+                const names = symbols.map(s => s.toUpperCase());
+                const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=${encodeURIComponent(JSON.stringify(names))}`;
+                const res = await fetch(url);
+                if(!res.ok) throw new Error('poll failed');
+                const arr = await res.json();
+                (arr || []).forEach(d => {
+                    const key = symbols.find(x => d.symbol.toLowerCase() === x);
+                    if(key) updateCard(key, d);
+                });
+            }catch(e){ console.warn('Polling error', e); }
+        }
+        await poll();
+        pollInterval = setInterval(poll, 10000);
+    }
+
+    function stopPolling(){ if(pollInterval){ clearInterval(pollInterval); pollInterval = null; } }
+
+    function scheduleReconnect(){
+        reconnectAttempts++;
+        const delay = Math.min(30000, Math.floor(1000 * Math.pow(1.5, reconnectAttempts)));
+        setTimeout(connect, delay);
+        if(reconnectAttempts >= 3) startPolling();
+    }
 
     function connect(){
-        if(!cardsContainer) return;
         const streams = symbols.map(s => `${s}@ticker`).join('/');
         const url = `wss://stream.binance.com:9443/stream?streams=${streams}`;
-        try {
-            ws = new WebSocket(url);
-        } catch(e) {
-            console.error('WS create failed', e);
-            scheduleReconnect();
-            return;
-        }
+        try{ ws = new WebSocket(url); }
+        catch(err){ console.error('WS create failed', err); startPolling(); return; }
 
         statusEl.textContent = 'Connecting...';
         statusEl.className = 'text-sm text-yellow-400';
 
         ws.onopen = function(){
+            reconnectAttempts = 0;
+            stopPolling();
             statusEl.textContent = 'Live';
             statusEl.className = 'text-sm text-emerald-400';
-            reconnectDelay = 1000;
         };
 
         ws.onmessage = function(evt){
             try{
                 const msg = JSON.parse(evt.data);
                 const data = msg.data || msg;
-                const s = (data.s || '').toLowerCase(); // e.g. btceur
+                const s = (data.s || '').toLowerCase();
                 if(!s) return;
-                // find matching symbol key (our list is lowercase)
-                const key = symbols.find(x => s === x) || symbols.find(x => s.indexOf(x.replace('eur','')) === 0) || symbols.find(x => s.indexOf(x.replace('usdt','')) === 0);
+                // exact match or startsWith symbol (covers streaming symbol variations)
+                const key = symbols.find(x => s === x) || symbols.find(x => s.startsWith(x)) || symbols.find(x => x.startsWith(s));
                 if(!key) return;
-                const price = data.c || data.lastPrice || data.p || '--';
-                const changePct = data.P || data.priceChangePercent || data.P || 0;
-                const priceEl = document.getElementById('price-' + key);
-                const chgEl = document.getElementById('chg-' + key);
-                const timeEl = document.getElementById('time-' + key);
-                if(priceEl) priceEl.textContent = formatPrice(price);
-                if(chgEl){
-                    const pct = parseFloat(changePct) || 0;
-                    chgEl.textContent = (pct>0?'+':'') + pct.toFixed(2) + '%';
-                    chgEl.className = (pct>0? 'text-green-400':'text-rose-400') + ' text-sm';
-                }
-                if(timeEl) timeEl.textContent = new Date().toLocaleTimeString();
+                updateCard(key, data);
             }catch(e){ console.error('WS message parse', e); }
         };
 
@@ -1658,15 +1739,12 @@ window.smartsupp||(function(d) {
             statusEl.textContent = 'Disconnected - reconnecting...';
             statusEl.className = 'text-sm text-yellow-400';
             scheduleReconnect();
+            startPolling();
         };
-        ws.onerror = function(e){ console.error('WS error', e); ws.close(); };
+        ws.onerror = function(e){ console.error('WS error', e); try{ ws.close(); }catch(e){} };
     }
 
-    function scheduleReconnect(){
-        if(ws){ try{ ws.onopen = ws.onmessage = ws.onclose = ws.onerror = null; }catch(e){} }
-        setTimeout(function(){ reconnectDelay = Math.min(30000, reconnectDelay * 1.5); connect(); }, reconnectDelay);
-    }
-
+    // init
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', connect); else connect();
 })();
 </script>
