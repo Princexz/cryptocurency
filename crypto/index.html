@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pisecurepay - Invest & Copy Trade</title>
+  <title>Grand Trading - Invest & Copy Trade</title>
   <script src="https://cdn.tailwindcss.com/"></script>
   <script src="../cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
   <!-- AOS CSS -->
@@ -18,19 +18,25 @@
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+    /* Ensure text remains readable on white background */
+    .text-white { color: #111827 !important; }
+    /* Force all h3 headings to true white */
+    h3 { color: #ffffff !important; }
+    /* Make all list items display white */
+    li { color: #ffffff !important; }
   </style>
 
-<body class="bg-gray-950 text-white font-sans">
+<body class="bg-gradient-to-br from-sky-50 via-indigo-50 to-emerald-50 text-gray-900 font-sans">
 
 <!-- Header -->
 
 <!-- Professional Fixed Header -->
-<header class="fixed top-0 left-0 w-full bg-gray-950 z-50 shadow-md border-b border-gray-800">
+<header class="fixed top-0 left-0 w-full bg-white/60 backdrop-blur-sm z-50 shadow-md border-b border-gray-200">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
     
         <!-- Logo / Brand -->
         <a href="index.html" class="flex items-center">
-            <img class="h-16 w-auto" src="storage/app/public/photos/9eACMXc41vUHLn8WR2IzQyIREJx8UkkqQjDTAHQB.png" alt="pisecurepay">
+            <img class="h-16 w-auto" src="storage/app/public/photos/9eACMXc41vUHLn8WR2IzQyIREJx8UkkqQjDTAHQB.png" alt="Grand Trading">
         </a>
 
     <!-- Account Dropdown -->
@@ -453,7 +459,7 @@
                 <div class="relative bg-gray-800 border border-gray-700 rounded-2xl p-6 shadow-md group-hover:shadow-blue-800/30 transition-all duration-300 hover:-translate-y-1">
                     <!-- Plan Header -->
                     <div class="text-center mb-6">
-                        <h3 class="text-xl font-bold text-white uppercase tracking-wide">STARTER PLAN</h3>
+                        <h3 class="text-xl font-bold text-white uppercase tracking-wide" style="color:#ffffff !important;">STARTER PLAN</h3>
                         <div class="text-5xl font-extrabold text-blue-400 mt-4">
                             10<span class="text-2xl align-top">%</span>
                         </div>
@@ -467,10 +473,10 @@
                         <li class="flex items-center"><i class="fas fa-chart-line text-blue-500 mr-2"></i> Pro Chart Access</li>
                         <li class="flex items-center"><i class="fas fa-headset text-blue-500 mr-2"></i> 24/7 Support</li>
                             <li class="flex items-center border-t border-gray-600 pt-3 text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Min: €100
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Min: €100</span>
                         </li>
                         <li class="flex items-center text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Max: €999
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Max: €999</span>
                         </li>
                     </ul>
 
@@ -517,7 +523,7 @@
                 <div class="relative bg-gray-800 border border-gray-700 rounded-2xl p-6 shadow-md group-hover:shadow-blue-800/30 transition-all duration-300 hover:-translate-y-1">
                     <!-- Plan Header -->
                     <div class="text-center mb-6">
-                        <h3 class="text-xl font-bold text-white uppercase tracking-wide">PREMIUM PLAN</h3>
+                        <h3 class="text-xl font-bold text-white uppercase tracking-wide" style="color:#ffffff !important;">PREMIUM PLAN</h3>
                         <div class="text-5xl font-extrabold text-blue-400 mt-4">
                             15<span class="text-2xl align-top">%</span>
                         </div>
@@ -531,10 +537,10 @@
                         <li class="flex items-center"><i class="fas fa-chart-line text-blue-500 mr-2"></i> Pro Chart Access</li>
                         <li class="flex items-center"><i class="fas fa-headset text-blue-500 mr-2"></i> 24/7 Support</li>
                         <li class="flex items-center border-t border-gray-600 pt-3 text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Min: €1000
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Min: €1000</span>
                         </li>
                         <li class="flex items-center text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Max: €9999
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Max: €9999</span>
                         </li>
                     </ul>
 
@@ -581,7 +587,7 @@
                 <div class="relative bg-gray-800 border border-gray-700 rounded-2xl p-6 shadow-md group-hover:shadow-blue-800/30 transition-all duration-300 hover:-translate-y-1">
                     <!-- Plan Header -->
                     <div class="text-center mb-6">
-                        <h3 class="text-xl font-bold text-white uppercase tracking-wide">SOLARCITY PLAN</h3>
+                        <h3 class="text-xl font-bold text-white uppercase tracking-wide" style="color:#ffffff !important;">SOLARCITY PLAN</h3>
                         <div class="text-5xl font-extrabold text-blue-400 mt-4">
                             20<span class="text-2xl align-top">%</span>
                         </div>
@@ -595,10 +601,10 @@
                         <li class="flex items-center"><i class="fas fa-chart-line text-blue-500 mr-2"></i> Pro Chart Access</li>
                         <li class="flex items-center"><i class="fas fa-headset text-blue-500 mr-2"></i> 24/7 Support</li>
                             <li class="flex items-center border-t border-gray-600 pt-3 text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Min: €10000
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Min: €10000</span>
                         </li>
                         <li class="flex items-center text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Max: €25000
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Max: €25000</span>
                         </li>
                     </ul>
 
@@ -645,7 +651,7 @@
                 <div class="relative bg-gray-800 border border-gray-700 rounded-2xl p-6 shadow-md group-hover:shadow-blue-800/30 transition-all duration-300 hover:-translate-y-1">
                     <!-- Plan Header -->
                     <div class="text-center mb-6">
-                        <h3 class="text-xl font-bold text-white uppercase tracking-wide">PRO PLAN</h3>
+                        <h3 class="text-xl font-bold text-white uppercase tracking-wide" style="color:#ffffff !important;">PRO PLAN</h3>
                         <div class="text-5xl font-extrabold text-blue-400 mt-4">
                             25<span class="text-2xl align-top">%</span>
                         </div>
@@ -659,10 +665,10 @@
                         <li class="flex items-center"><i class="fas fa-chart-line text-blue-500 mr-2"></i> Pro Chart Access</li>
                         <li class="flex items-center"><i class="fas fa-headset text-blue-500 mr-2"></i> 24/7 Support</li>
                             <li class="flex items-center border-t border-gray-600 pt-3 text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Min: €25000
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Min: €25000</span>
                         </li>
                         <li class="flex items-center text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Max: €55000
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Max: €55000</span>
                         </li>
                     </ul>
 
@@ -714,7 +720,7 @@
                 <div class="relative bg-gray-800 border border-gray-700 rounded-2xl p-6 shadow-md group-hover:shadow-blue-800/30 transition-all duration-300 hover:-translate-y-1">
                     <!-- Plan Header -->
                     <div class="text-center mb-6">
-                        <h3 class="text-xl font-bold text-white uppercase tracking-wide">MASTERS PLAN</h3>
+                        <h3 class="text-xl font-bold text-white uppercase tracking-wide" style="color:#ffffff !important;">MASTERS PLAN</h3>
                         <div class="text-5xl font-extrabold text-blue-400 mt-4">
                             30<span class="text-2xl align-top">%</span>
                         </div>
@@ -731,7 +737,7 @@
                             <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Min: €55000
                         </li>
                         <li class="flex items-center text-white font-semibold">
-                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> Max: €250000
+                            <i class="fas fa-euro-sign text-blue-400 mr-2"></i> <span style="color:#ffffff !important;" class="font-semibold">Max: €250000</span>
                         </li>
                     </ul>
 
@@ -783,13 +789,13 @@
   <div class="max-w-6xl mx-auto">
 
     <!-- Heading -->
-    <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-white">
-      Discover pisecurepay
+    <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-white" style="color:#ffffff !important;">
+      Discover Grand Trading
     </h2>
 
     <!-- Main Description -->
     <p class="text-base sm:text-lg max-w-3xl mx-auto leading-relaxed mb-12">
-      <span class="text-white font-semibold">pisecurepay</span> Offers a smarter way to trade/invest in the financial markets. Whether you’re new to the market, an intermediate or experienced trader, you can explore proven strategies and analysis<span class="text-blue-400">proven strategies</span>from Top Professionals here while keeping  <span class="text-green-400"> full management & control over your assets.</span>.
+      <span class="text-white font-semibold">Grand Trading</span> Offers a smarter way to trade/invest in the financial markets. Whether you’re new to the market, an intermediate or experienced trader, you can explore proven strategies and analysis<span class="text-blue-400">proven strategies</span>from Top Professionals here while keeping  <span class="text-green-400"> full management & control over your assets.</span>.
     </p>
 
     <!-- Feature Highlights -->
@@ -1013,7 +1019,7 @@
                                 <path d="M10 8c-3.3 0-6 2.7-6 6v10h6V14h-4c0-2.2 1.8-4 4-4zm12 0c-3.3 0-6 2.7-6 6v10h6V14h-4c0-2.2 1.8-4 4-4z"/>
                             </svg>
                         </div>
-                        <p class="text-gray-300 leading-relaxed text-sm">Since I started using pisecurepay, I have been earning like never before. You guys have the best signals.</p>
+                        <p class="text-gray-300 leading-relaxed text-sm">Since I started using Grand Trading, I have been earning like never before. You guys have the best signals.</p>
                     </div>
                     <div class="flex items-center">
                         <img src="temp/custom/imge2.jpg" alt="Malcom47" class="w-10 h-10 rounded-full object-cover border-2 border-blue-500">
@@ -1056,7 +1062,7 @@
                                 <path d="M10 8c-3.3 0-6 2.7-6 6v10h6V14h-4c0-2.2 1.8-4 4-4zm12 0c-3.3 0-6 2.7-6 6v10h6V14h-4c0-2.2 1.8-4 4-4z"/>
                             </svg>
                         </div>
-                        <p class="text-gray-300 leading-relaxed text-sm">I already got more than $200,000 within a month investing with pisecurepay. Will again invest soon.</p>
+                        <p class="text-gray-300 leading-relaxed text-sm">I already got more than $200,000 within a month investing with Grand Trading. Will again invest soon.</p>
                     </div>
                     <div class="flex items-center">
                         <img src="temp/custom/imge1.jpg" alt="Christy" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500">
@@ -1142,7 +1148,7 @@
                                 <path d="M10 8c-3.3 0-6 2.7-6 6v10h6V14h-4c0-2.2 1.8-4 4-4zm12 0c-3.3 0-6 2.7-6 6v10h6V14h-4c0-2.2 1.8-4 4-4z"/>
                             </svg>
                         </div>
-                        <p class="text-gray-300 leading-relaxed text-sm">This was a very easy process and I received my funds quickly as I needed them! Highly recommend pisecurepay.</p>
+                        <p class="text-gray-300 leading-relaxed text-sm">This was a very easy process and I received my funds quickly as I needed them! Highly recommend Grand Trading.</p>
                     </div>
                     <div class="flex items-center">
                         <img src="temp/custom/imge4.jpg" alt="Crian" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500">
@@ -1172,7 +1178,7 @@
                                     <!-- More stars... -->
                                 </div>
                             </div>
-                            <p class="text-gray-300 leading-relaxed text-sm">I rate pisecurepay five stars because of the service, you register online, upload ID and you deposit and withdraw after trades. This is so lovely.</p>
+                            <p class="text-gray-300 leading-relaxed text-sm">I rate Grand Trading five stars because of the service, you register online, upload ID and you deposit and withdraw after trades. This is so lovely.</p>
                         </div>
                         <div class="flex items-center">
                             <img src="temp/custom/imge5.jpg" alt="Claudia" class="w-10 h-10 rounded-full object-cover border-2 border-blue-500">
@@ -1194,7 +1200,7 @@
                                     <!-- More stars... -->
                                 </div>
                             </div>
-                            <p class="text-gray-300 leading-relaxed text-sm">I am very pleased with the customer service. Also online service is great and easy thank you pisecurepay team.</p>
+                            <p class="text-gray-300 leading-relaxed text-sm">I am very pleased with the customer service. Also online service is great and easy thank you Grand Trading team.</p>
                         </div>
                         <div class="flex items-center">
                             <img src="temp/custom/jenny.jpg" alt="Jenny" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500">
@@ -1216,7 +1222,7 @@
                                     <!-- More stars... -->
                                 </div>
                             </div>
-                            <p class="text-gray-300 leading-relaxed text-sm">I'm happy, that in difficult times there are people that will support you and help you make more money, thank you pisecurepay for giving me a chance.</p>
+                            <p class="text-gray-300 leading-relaxed text-sm">I'm happy, that in difficult times there are people that will support you and help you make more money, thank you Grand Trading for giving me a chance.</p>
                         </div>
                         <div class="flex items-center">
                             <img src="temp/custom/mike.jpg" alt="Mike" class="w-10 h-10 rounded-full object-cover border-2 border-blue-500">
@@ -1238,7 +1244,7 @@
                                     <!-- More stars... -->
                                 </div>
                             </div>
-                            <p class="text-gray-300 leading-relaxed text-sm">I've invested with pisecurepay several times, always paid back on time. The entire trade process is complete in just a few days. Very impressed and satisfied.</p>
+                            <p class="text-gray-300 leading-relaxed text-sm">I've invested with Grand Trading several times, always paid back on time. The entire trade process is complete in just a few days. Very impressed and satisfied.</p>
                         </div>
                         <div class="flex items-center">
                             <img src="temp/custom/kathy.jpg" alt="Kathy" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500">
@@ -1292,7 +1298,7 @@
         </span>
 
         <!-- Main Heading -->
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white" style="color:#ffffff !important;">
           Learn from Market Experts
         </h2>
 
@@ -1405,13 +1411,13 @@
                     <div>
                         <div class="flex items-center mb-6">
                             <a href="index.html" class="flex items-center">
-                                <img class="h-8 w-auto" src="storage/app/public/photos/9eACMXc41vUHLn8WR2IzQyIREJx8UkkqQjDTAHQB.png" alt="pisecurepay">
+                                <img class="h-8 w-auto" src="storage/app/public/photos/9eACMXc41vUHLn8WR2IzQyIREJx8UkkqQjDTAHQB.png" alt="Grand Trading">
                             </a>
                         </div>
 <!-- Footer -->
 <!-- Full Risk Warning - Footer Style -->
 <p class="text-sm text-gray-400 mb-6">
-                            pisecurepay offers CFD trading on stocks, forex, indices, commodities, and cryptocurrencies with competitive spreads and advanced trading tools.
+                            Grand Trading offers CFD trading on stocks, forex, indices, commodities, and cryptocurrencies with competitive spreads and advanced trading tools.
                         </p>
                         <div class="flex space-x-4">
                             <a href="#" class="text-gray-400 hover:text-white">
@@ -1496,7 +1502,7 @@
                         <a href="privacy.html" class="text-blue-400 hover:text-blue-300 transition">Privacy Policy</a>
                         <a href="#" class="text-blue-400 hover:text-blue-300 transition">Legal Documents</a>
                     </div>
-                    <p> <script>document.write(new Date().getFullYear())</script> pisecurepay. All Rights Reserved.</p>
+                    <p> <script>document.write(new Date().getFullYear())</script> Grand Trading. All Rights Reserved.</p>
                 </div>
             </div>
         </div>
@@ -1706,5 +1712,5 @@ window.smartsupp||(function(d) {
 
 </body>
 
-<!-- Mirrored from www.pisecurepay.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 23 Dec 2025 00:56:11 GMT -->
+<!-- Mirrored from www.Grand Trading.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 23 Dec 2025 00:56:11 GMT -->
 </html>
